@@ -8,6 +8,8 @@ if (!model) throw new Error("GEMINI_MODEL is not set");
 
 const limitArg = process.argv.find((a) => a.startsWith("--limit="));
 const limit = limitArg ? Number(limitArg.split("=")[1]) : undefined;
+const promptArg = process.argv.find((a) => a.startsWith("--prompt="));
+const version = promptArg ? promptArg.split("=")[1] : "v1";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const llm = createGeminiClient(model);
@@ -23,7 +25,7 @@ for (const d of docs) {
   let attempt = 0;
   while (true) {
     try {
-      const r = await processDocument(prisma, d.id, llm, model);
+      const r = await processDocument(prisma, d.id, llm, model, version);
       if (r.skipped) {
         skipped++;
         console.log("skip", d.filename);
@@ -49,7 +51,7 @@ for (const d of docs) {
 }
 
 const s = await prisma.llmRun.aggregate({
-  where: { model, success: true },
+  where: { model, promptVersion: version, success: true },
   _count: true,
   _sum: { inputTokens: true, outputTokens: true, cost: true },
   _avg: { latencyMs: true },

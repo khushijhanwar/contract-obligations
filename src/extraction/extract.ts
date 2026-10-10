@@ -25,10 +25,10 @@ export type ExtractionOutcome = {
   outputTokens: number;
 };
 
-export async function extractFields(contract: string, llm: LlmClient): Promise<ExtractionOutcome> {
-  const res = await llm.generate(buildPrompt(contract), modelJsonSchema);
+export async function extractFields(contract: string, llm: LlmClient, version: string = PROMPT_VERSION): Promise<ExtractionOutcome> {
+  const res = await llm.generate(buildPrompt(contract, version), modelJsonSchema);
   const base = {
-    promptVersion: PROMPT_VERSION,
+    promptVersion: version,
     inputTokens: res.inputTokens,
     outputTokens: res.outputTokens,
   };

@@ -1,0 +1,246 @@
+# Eval: split=dev, model=gemini-3.5-flash-lite, prompt=v1
+Contracts evaluated: 50/50
+
+| Field | Labeled | Precision | Recall | F1 | Overlap % | Avg IoU % |
+|---|---|---|---|---|---|---|
+| Parties | 50 | 100.0 | 96.0 | 98.0 | 95.8 | 16.4 |
+| Agreement Date | 45 | 97.5 | 86.7 | 91.8 | 84.6 | 36.5 |
+| Effective Date | 33 | 88.6 | 93.9 | 91.2 | 87.1 | 49.3 |
+| Expiration Date | 38 | 88.2 | 78.9 | 83.3 | 96.7 | 58.7 |
+| Renewal Term | 20 | 76.0 | 95.0 | 84.4 | 100.0 | 55.1 |
+| Notice Period to Terminate Renewal | 9 | 37.5 | 100.0 | 54.5 | 100.0 | 46.2 |
+| Governing Law | 45 | 97.8 | 100.0 | 98.9 | 100.0 | 70.4 |
+| Cap on Liability | 25 | 100.0 | 52.0 | 68.4 | 92.3 | 62.8 |
+
+Micro F1 88.3 | Macro F1 83.8
+Cost per document at list price: $0.0049 | avg latency 2513 ms
+
+## Misses
+- [false positive] Expiration Date | AFSALABANCORPINC_08_01_1996-EX-1.1-AGENCY AGREEMENT
+  - model: but in no event later than 45 days after the completion of the Subscription and Public Off
+  - expert: (no label)
+- [false positive] Renewal Term | AFSALABANCORPINC_08_01_1996-EX-1.1-AGENCY AGREEMENT
+  - model: the Company, the -2- Association and Capital Resources may mutually agree to renew this Ag
+  - expert: (no label)
+- [missed] Parties | AgapeAtpCorp_20191202_10-KA_EX-10.1_11911128_EX-10.1_Supply Agreement
+  - model: (not found)
+  - expert: AGAPE ATP INTERNATIONAL HOLDING LIMITED
+- [false positive] Notice Period to Terminate Renewal | ArcaUsTreasuryFund_20200207_N-2_EX-99.K5_11971930_EX-99.K5_Development Agreement
+  - model: This Agreement may be terminated at any time, without the payment of any penalty, upon 60 
+  - expert: (no label)
+- [missed] Agreement Date | ArconicRolledProductsCorp_20191217_10-12B_EX-2.7_11923804_EX-2.7_Trademark License Agreement
+  - model: (not found)
+  - expert: [ ] day of [ ], 2020 (
+- [missed] Effective Date | ArconicRolledProductsCorp_20191217_10-12B_EX-2.7_11923804_EX-2.7_Trademark License Agreement
+  - model: (not found)
+  - expert: [ ] day of [ ], 2020
+- [missed] Expiration Date | ArconicRolledProductsCorp_20191217_10-12B_EX-2.7_11923804_EX-2.7_Trademark License Agreement
+  - model: (not found)
+  - expert: The Term of this Agreement will commence on the Effective Date and shall continue for the 
+- [wrong place] Agreement Date | AzulSa_20170303_F-1A_EX-10.3_9943903_EX-10.3_Maintenance Agreement1
+  - model: March 9th, 2015
+  - expert: March 9th 2015
+- [false positive] Effective Date | AzulSa_20170303_F-1A_EX-10.3_9943903_EX-10.3_Maintenance Agreement1
+  - model: The Agreement enters into force on the Signing Date
+  - expert: (no label)
+- [missed] Cap on Liability | AzulSa_20170303_F-1A_EX-10.3_9943903_EX-10.3_Maintenance Agreement1
+  - model: (not found)
+  - expert: SUBJECT TO CLAUSE 15.2 BELOW, THE REPAIRER, SHALL NOT BE LIABLE TO THE COMPANY FOR ANY OF 
+- [missed] Parties | BERKELEYLIGHTS,INC_06_26_2020-EX-10.12-COLLABORATION AGREEMENT
+  - model: (not found)
+  - expert: BLI
+- [missed] Agreement Date | BERKELEYLIGHTS,INC_06_26_2020-EX-10.12-COLLABORATION AGREEMENT
+  - model: (not found)
+  - expert: September 13th, 2019
+- [missed] Renewal Term | BERKELEYLIGHTS,INC_06_26_2020-EX-10.12-COLLABORATION AGREEMENT
+  - model: (not found)
+  - expert: at the expiration of the Intended End of Term, Ginkgo has paid the Minimum Cumulative Purc
+- [false positive] Expiration Date | BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT
+  - model: shall end at each Store no later than August 31, 2018
+  - expert: (no label)
+- [false positive] Notice Period to Terminate Renewal | BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT
+  - model: upon not less than seven (7) days' prior written notice
+  - expert: (no label)
+- [false positive] Notice Period to Terminate Renewal | ClickstreamCorp_20200330_1-A_EX1A-6 MAT CTRCT_12089935_EX1A-6 MAT CTRCT_Development Agreement
+  - model: seven (7) days written notice
+  - expert: (no label)
+- [missed] Expiration Date | DRKOOPCOMINC_04_21_1999-EX-10.28-SPONSORSHIP AGREEMENT
+  - model: (not found)
+  - expert: Sponsor Website or Vitamin Buzz contained in the Sponsor logos or the Sponsor banner adver
+- [false positive] Notice Period to Terminate Renewal | DRKOOPCOMINC_04_21_1999-EX-10.28-SPONSORSHIP AGREEMENT
+  - model: Either party may terminate this Agreement upon thirty (30) days' written notice of a breac
+  - expert: (no label)
+- [missed] Cap on Liability | DRKOOPCOMINC_04_21_1999-EX-10.28-SPONSORSHIP AGREEMENT
+  - model: (not found)
+  - expert: EXCEPT AS SET FORTH IN SECTION 6.3, IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE OTHER 
+- [wrong place] Effective Date | DigitalCinemaDestinationsCorp_20111220_S-1_EX-10.10_7346719_EX-10.10_Affiliate Agreement
+  - model: On the Effective Date (the date on which NCM first provides the Service to the Theatres)
+  - expert: The Parties contemplate that the Effective Date will be on or about ______________________
+- [false positive] Renewal Term | DigitalCinemaDestinationsCorp_20111220_S-1_EX-10.10_7346719_EX-10.10_Affiliate Agreement
+  - model: after which this Agreement may be extended on mutual agreement of the parties (a "Renewal 
+  - expert: (no label)
+- [false positive] Notice Period to Terminate Renewal | DigitalCinemaDestinationsCorp_20111220_S-1_EX-10.10_7346719_EX-10.10_Affiliate Agreement
+  - model: If either party wishes to extend the Initial Term it shall provide notice to the other not
+  - expert: (no label)
+- [missed] Cap on Liability | ENTERPRISEPRODUCTSPARTNERSLP_07_08_1998-EX-10.3-TRANSPORTATION CONTRACT
+  - model: (not found)
+  - expert: In no event shall Carrier be liable for any lost profits or special, indirect or consequen
+- [missed] Expiration Date | FEDERATEDGOVERNMENTINCOMESECURITIESINC_04_28_2020-EX-99.SERV AGREE-SERVICES AGREEMENT_POWEROF
+  - model: (not found)
+  - expert: This Limited Power of Attorney shall be revoked and terminated automatically upon the canc
+- [false positive] Renewal Term | FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT
+  - model: Flotek, may, by written notice given to FCC on or before September 30, 2023, elect for the
+  - expert: (no label)
+- [false positive] Notice Period to Terminate Renewal | FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT
+  - model: Flotek, may, by written notice given to FCC on or before September 30, 2023, elect for the
+  - expert: (no label)
+- [wrong place] Agreement Date | GridironBionutrientsInc_20171206_8-K_EX-10.2_10972556_EX-10.2_Endorsement Agreement
+  - model: The parties have executed this Agreement on November 22nd, 2017.
+  - expert: November 7, 2017
+- [wrong place] Parties | HEALTHGATEDATACORP_11_24_1999-EX-10.1-HOSTING AND MANAGEMENT AGREEMENT - Escrow Agreement
+  - model: Proposed Escrow Agreement: Healthgate Data Corp / Blackwell Science Ltd / NCC
+  - expert: "the Owner"
+- [false positive] Renewal Term | HOSPITALITYINVESTORSTRUST,INC_04_07_2014-EX-10.26-FRANCHISE AGREEMENT
+  - model: You acknowledge and agree that this Agreement is non-renewable and that this Agreement con
+  - expert: (no label)
+- [missed] Cap on Liability | HOSPITALITYINVESTORSTRUST,INC_04_07_2014-EX-10.26-FRANCHISE AGREEMENT
+  - model: (not found)
+  - expert: THE PARTIES ACKNOWLEDGE THAT LIQUIDATED DAMAGES PAYABLE BY YOU UNDER THIS AGREEMENT (WHETH
+- [wrong place] Agreement Date | HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT
+  - model: January 5, 2015
+  - expert: 5th day of January, 2015
+- [false positive] Notice Period to Terminate Renewal | HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT
+  - model: within thirty (30) days of receipt by the Party of written termination notice.
+  - expert: (no label)
+- [missed] Cap on Liability | HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT
+  - model: (not found)
+  - expert: GINARES agrees that the sole and exclusive remedy for money damages related to this Agreem
+- [missed] Expiration Date | HYPERIONSOFTWARECORP_09_28_1994-EX-10.47-EXCLUSIVE DISTRIBUTOR AGREEMENT
+  - model: (not found)
+  - expert: This Agreement shall have an initial term of one (1) year from the date first above writte
+- [false positive] Expiration Date | INTELLIGENTHIGHWAYSOLUTIONS,INC_01_18_2018-EX-10.1-Strategic Alliance Agreement
+  - model: The term of this Agreement is twelve (12) months from the date hereof
+  - expert: (no label)
+- [false positive] Agreement Date | INTERNATIONALFASTFOODCORP_04_04_1997-EX-99-FRANCHISE AGREEMENT
+  - model: AGREEMENT dated 199
+  - expert: (no label)
+- [false positive] Effective Date | INTERNATIONALFASTFOODCORP_04_04_1997-EX-99-FRANCHISE AGREEMENT
+  - model: The license hereby granted shall commence on the date the Franchised Restaurant opens for 
+  - expert: (no label)
+- [false positive] Renewal Term | INTERNATIONALFASTFOODCORP_04_04_1997-EX-99-FRANCHISE AGREEMENT
+  - model: 2.3 NO RENEWAL RIGHT; NO EXCLUSIVITY. The Franchisee acknowledges and agrees that this lic
+  - expert: (no label)
+- [wrong place] Agreement Date | INTRICONCORP_03_10_2009-EX-10.22-Strategic Alliance Agreement
+  - model: Dated: July 20, 2008
+  - expert: 1st day of October, 2008
+- [false positive] Renewal Term | INTRICONCORP_03_10_2009-EX-10.22-Strategic Alliance Agreement
+  - model: and may be extended subject to satisfactory agreement on ongoing commercial terms, to be a
+  - expert: (no label)
+- [false positive] Notice Period to Terminate Renewal | IntegrityFunds_20200121_485BPOS_EX-99.E UNDR CONTR_11948727_EX-99.E UNDR CONTR_Service Agreement
+  - model: This Agreement is terminable with respect to the Fund, without penalty, (a) on 60 days' wr
+  - expert: (no label)
+- [missed] Cap on Liability | LinkPlusCorp_20050802_8-K_EX-10_3240252_EX-10_Affiliate Agreement
+  - model: (not found)
+  - expert: No action, case, suit or proceeding, regardless of form, arising out of or related to this
+- [missed] Agreement Date | MEDALISTDIVERSIFIEDREIT,INC_05_18_2020-EX-10.1-CONSULTING AGREEMENT
+  - model: (not found)
+  - expert: 1st day of March 2020
+- [false positive] Notice Period to Terminate Renewal | MEDALISTDIVERSIFIEDREIT,INC_05_18_2020-EX-10.1-CONSULTING AGREEMENT
+  - model: (c) ninety (90) days following the date the Company gives CONSULTANT written notice of ter
+  - expert: (no label)
+- [wrong place] Effective Date | MusclepharmCorp_20170208_10-KA_EX-10.38_9893581_EX-10.38_Co-Branding Agreement
+  - model: The Term shall commence on July 23, 2013 and shall expire on July 22, 2016
+  - expert: July 26, 2013
+- [false positive] Notice Period to Terminate Renewal | NETGEAR,INC_04_21_2003-EX-10.16-DISTRIBUTOR AGREEMENT
+  - model: This Agreement may be canceled at any time without cause, by either party upon ninety (90)
+  - expert: (no label)
+- [false positive] Notice Period to Terminate Renewal | NETZEEINC_11_14_2002-EX-10.3-MAINTENANCE AGREEMENT
+  - model: at least sixty (60) days in advance of the applicable renewal date.
+  - expert: (no label)
+- [wrong place] Parties | OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2
+  - model: dated as of May 22, 2015 between the Corporation and the agents named therein
+  - expert: [ ]
+- [wrong place] Agreement Date | OLDAPIWIND-DOWNLTD_01_08_2016-EX-1.3-AGENCY AGREEMENT2
+  - model: dated as of May 22, 2015
+  - expert: , 2015.
+- [false positive] Notice Period to Terminate Renewal | OMINTO,INC_03_29_2004-EX-10-RESELLER AGREEMENT
+  - model: Either party may terminate the Agreement on 60-days written notice during a renewed term.
+  - expert: (no label)
+- [missed] Cap on Liability | OMINTO,INC_03_29_2004-EX-10-RESELLER AGREEMENT
+  - model: (not found)
+  - expert: IN NO EVENT SHALL EITHER PARTY BE LIABLE TO EACH OTHER OR ANY OTHER ENTITY FOR ANY SPECIAL
+- [missed] Agreement Date | ON4COMMUNICATIONSINC_07_02_2009-EX-10.1-PROMOTION AGREEMENT
+  - model: (not found)
+  - expert: June 29, 2009
+- [false positive] Expiration Date | ON4COMMUNICATIONSINC_07_02_2009-EX-10.1-PROMOTION AGREEMENT
+  - model: Eligible Pin Codes may be entered on the www.charitytunes.com website and corresponding mu
+  - expert: (no label)
+- [false positive] Notice Period to Terminate Renewal | OPTIMIZEDTRANSPORTATIONMANAGEMENT,INC_07_26_2000-EX-6.6-DISTRIBUTOR AGREEMENT
+  - model: either ITS or COMWARE shall have the right to terminate this Agreement with 30 days writte
+  - expert: (no label)
+- [wrong place] Agreement Date | PACIRA PHARMACEUTICALS, INC. - A_R STRATEGIC LICENSING, DISTRIBUTION AND MARKETING AGREEMENT 
+  - model: DATED: OCTOBER 15, 2009
+  - expert: October 15, 2009
+- [wrong place] Effective Date | PACIRA PHARMACEUTICALS, INC. - A_R STRATEGIC LICENSING, DISTRIBUTION AND MARKETING AGREEMENT 
+  - model: "Effective Date" Means August 10, 2007;
+  - expert: August 10, 2007
+- [missed] Cap on Liability | PlayboyEnterprisesInc_20090220_10-QA_EX-10.2_4091580_EX-10.2_Content License Agreement_ Marketing Agreement_ Sales-Purchase Agreement1
+  - model: (not found)
+  - expert: EXCEPT IN THE EVENT OF A BREACH OF SECTION 8 (CONFIDENTIALITY) OR LIABILITY ARISING UNDER 
+- [wrong place] Expiration Date | RemarkHoldingsInc_20081114_10-Q_EX-10.24_2895649_EX-10.24_Content License Agreement
+  - model: (i) July 1, 2008 - December 30th, 2009
+  - expert: This Agreement shall commence on the Effective Date and, except as set forth in Subsection
+- [false positive] Notice Period to Terminate Renewal | SANDRIDGEENERGYINC_08_06_2009-EX-10.6-OPERATIONS AND MAINTENANCE AGREEMENT
+  - model: no less than 120 days prior written notice
+  - expert: (no label)
+- [missed] Cap on Liability | SANDRIDGEENERGYINC_08_06_2009-EX-10.6-OPERATIONS AND MAINTENANCE AGREEMENT
+  - model: (not found)
+  - expert: NOTWITHSTANDING ANYTHING IN THIS AGREEMENT TO THE CONTRARY, NEITHER PARTY SHALL BE LIABLE 
+- [missed] Agreement Date | SENMIAOTECHNOLOGYLTD_02_19_2019-EX-10.5-Collaboration Agreement
+  - model: (not found)
+  - expert: December 17, 2018
+- [missed] Expiration Date | SENMIAOTECHNOLOGYLTD_02_19_2019-EX-10.5-Collaboration Agreement
+  - model: (not found)
+  - expert: Unless this Agreement is early terminated in accordance with this Agreement or other agree
+- [missed] Cap on Liability | SENMIAOTECHNOLOGYLTD_02_19_2019-EX-10.5-Collaboration Agreement
+  - model: (not found)
+  - expert: Unless any party is in violation of the confidentiality clause, in any case, neither party
+- [missed] Effective Date | SPIENERGYCO,LTD_03_09_2011-EX-99.5-OPERATIONS AND MAINTENANCE AGREEMENT
+  - model: (not found)
+  - expert: December 11, 2009
+- [missed] Expiration Date | SPIENERGYCO,LTD_03_09_2011-EX-99.5-OPERATIONS AND MAINTENANCE AGREEMENT
+  - model: (not found)
+  - expert: The term of this Agreement shall commence on the Services Commencement Date and remain eff
+- [missed] Cap on Liability | SUCAMPOPHARMACEUTICALS,INC_11_04_2015-EX-10.2-STRATEGIC ALLIANCE AGREEMENT
+  - model: (not found)
+  - expert: The Indemnifying Party's liability for all claims made under this Agreement shall be subje
+- [false positive] Effective Date | SUNTRONCORP_05_17_2006-EX-10.22-MAINTENANCE AGREEMENT
+  - model: 28th day of March 2006
+  - expert: (no label)
+- [missed] Expiration Date | SUNTRONCORP_05_17_2006-EX-10.22-MAINTENANCE AGREEMENT
+  - model: (not found)
+  - expert: This Agreement shall terminate upon the earliest to occur of: (i) the date on which the ag
+- [wrong place] Cap on Liability | SUNTRONCORP_05_17_2006-EX-10.22-MAINTENANCE AGREEMENT
+  - model: in an aggregate amount not to exceed $5,000,000 during the term of this Agreement.
+  - expert: The Investor acknowledges and agrees that if a Maintenance Event of Default (as defined in
+- [false positive] Governing Law | SoupmanInc_20150814_8-K_EX-10.1_9230148_EX-10.1_Franchise Agreement4
+  - model: ADDENDUM REQUIRED BY THE DEPARTMENT OF LAW OF THE STATE OF NEW YORK
+  - expert: (no label)
+- [missed] Agreement Date | VEONEER,INC_02_21_2020-EX-10.11-JOINT VENTURE AGREEMENT
+  - model: (not found)
+  - expert: October 30, 2019
+- [missed] Expiration Date | VEONEER,INC_02_21_2020-EX-10.11-JOINT VENTURE AGREEMENT
+  - model: (not found)
+  - expert: This Amendment shall only become effective upon the VNBJ Closing with respect to Article 1
+- [false positive] Notice Period to Terminate Renewal | WARNERCHILCOTTPLC_12_31_2003-EX-4.36-DEVELOPMENT AGREEMENT
+  - model: In the event that one of the Parties hereto materially defaults or breaches any of the pro
+  - expert: (no label)
+- [missed] Cap on Liability | WARNERCHILCOTTPLC_12_31_2003-EX-4.36-DEVELOPMENT AGREEMENT
+  - model: (not found)
+  - expert: Neither Party shall be liable to the Other Party for any direct, indirect, consequential, 
+- [wrong place] Effective Date | WASTE2ENERGYHOLDINGS,INC_06_03_2010-EX-10.2-STRATEGIC ALLIANCE AGREEMENT
+  - model: This Agreement shall come into force on the date given at the beginning of this Agreement.
+  - expert: Commencement Date means the date of this Agreement
+- [false positive] Effective Date | XYBERNAUTCORP_07_12_2002-EX-4-SPONSORSHIP AGREEMENT
+  - model: SPONSORSHIP AGREEMENT dated as of May 1, 2002
+  - expert: (no label)

@@ -8,12 +8,13 @@ export async function processDocument(
   documentId: string,
   llm: LlmClient,
   model: string,
+  version: string = PROMPT_VERSION,
 ): Promise<{ skipped: boolean; status?: string; saved?: number; unverified?: number }> {
   const doc = await prisma.document.findUniqueOrThrow({ where: { id: documentId } });
 
   // Idempotency: a successful run for this document, model and prompt means no new LLM call.
   const done = await prisma.llmRun.findFirst({
-    where: { documentId, model, promptVersion: PROMPT_VERSION, success: true },
+    where: { documentId, model, promptVersion: version, success: true },
   });
   if (done) return { skipped: true };
 
@@ -22,13 +23,13 @@ export async function processDocument(
   const started = Date.now();
   let outcome;
   try {
-    outcome = await extractFields(doc.rawText, llm);
+    outcome = await extractFields(doc.rawText, llm, version);
   } catch (e) {
     await prisma.llmRun.create({
       data: {
         documentId,
         model,
-        promptVersion: PROMPT_VERSION,
+        promptVersion: version,
         latencyMs: Date.now() - started,
         success: false,
         error: String(e).slice(0, 500),
@@ -44,7 +45,7 @@ export async function processDocument(
       data: {
         documentId,
         model,
-        promptVersion: PROMPT_VERSION,
+        promptVersion: version,
         inputTokens: outcome.inputTokens,
         outputTokens: outcome.outputTokens,
         cost: costUsd(model, outcome.inputTokens, outcome.outputTokens),
@@ -62,7 +63,7 @@ export async function processDocument(
         startOffset: f.startOffset,
         endOffset: f.endOffset,
         model,
-        promptVersion: PROMPT_VERSION,
+        promptVersion: version,
       })),
       skipDuplicates: true,
     }),
