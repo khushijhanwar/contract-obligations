@@ -32,9 +32,11 @@ model Document {
   rawText     String         @map("raw_text")
   status      DocumentStatus @default(uploaded)
   uploadedAt  DateTime       @default(now()) @map("uploaded_at")
+  split       DatasetSplit?
 
-  extractions Extraction[]
-  llmRuns     LlmRun[]
+  extractions  Extraction[]
+  llmRuns      LlmRun[]
+  expertLabels ExpertLabel[]
 
   @@map("documents")
 }
@@ -90,4 +92,23 @@ model LlmRun {
 
   @@index([documentId])
   @@map("llm_runs")
+}
+
+enum DatasetSplit {
+  dev
+  heldout
+}
+
+model ExpertLabel {
+  id          String @id @default(uuid()) @db.Uuid
+  documentId  String @map("document_id") @db.Uuid
+  fieldName   String @map("field_name")
+  text        String
+  startOffset Int    @map("start_offset")
+  endOffset   Int    @map("end_offset")
+
+  document Document @relation(fields: [documentId], references: [id])
+
+  @@index([documentId, fieldName])
+  @@map("expert_labels")
 }
