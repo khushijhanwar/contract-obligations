@@ -9,7 +9,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "cuad:load": "tsx scripts/load-cuad.ts",
-    "gemini:check": "tsx scripts/gemini-check.ts"
+    "gemini:check": "tsx scripts/gemini-check.ts",
+    "extract:one": "tsx scripts/extract-one.ts"
   },
   "repository": {
     "type": "git",
