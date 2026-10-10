@@ -11,7 +11,8 @@
     "cuad:load": "tsx scripts/load-cuad.ts",
     "gemini:check": "tsx scripts/gemini-check.ts",
     "extract:one": "tsx scripts/extract-one.ts",
-    "extract:batch": "tsx scripts/extract-batch.ts"
+    "extract:batch": "tsx scripts/extract-batch.ts",
+    "eval": "tsx scripts/eval.ts"
   },
   "repository": {
     "type": "git",
