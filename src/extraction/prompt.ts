@@ -13,6 +13,12 @@ const OVERRIDES: Record<string, Record<string, string>> = {
   },
 };
 
+OVERRIDES.v3 = {
+  ...OVERRIDES.v2,
+  notice_period:
+    "Notice needed to stop a contract from renewing or being extended after its initial term. Only fill this if the contract renews or extends and states how much notice a party must give to prevent that. If the contract only says it can be terminated at any time, for convenience or for breach on some days of notice, return found=false.",
+};
+
 export function buildPrompt(contract: string, version: string = PROMPT_VERSION): string {
   const over = OVERRIDES[version];
   if (!over) throw new Error(`Unknown prompt version: ${version}`);
