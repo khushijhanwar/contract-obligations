@@ -21,12 +21,18 @@
   },
   "homepage": "https://github.com/khushijhanwar/contract-obligations#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "dotenv": "^18.0.7",
+    "express": "^5.2.1",
+    "pg": "^8.23.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.4",
+    "@types/pg": "^8.23.1",
     "@types/supertest": "^7.2.1",
+    "prisma": "^7.10.0",
     "supertest": "^7.3.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
@@ -34,5 +40,6 @@
   },
   "engines": {
     "node": ">=22"
-  }
+  },
+  "type": "module"
 }
