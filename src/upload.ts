@@ -37,5 +37,19 @@ export function createUploadRouter(prisma: PrismaClient, llm: LlmClient, model: 
     }
   });
 
+  router.post("/documents/:id/retry", async (req, res) => {
+    const id = z.string().uuid().safeParse(req.params.id);
+    if (!id.success) return res.status(400).json({ error: "invalid_id" });
+    const doc = await prisma.document.findUnique({ where: { id: id.data } });
+    if (!doc) return res.status(404).json({ error: "not_found" });
+    try {
+      const result = await processDocument(prisma, doc.id, llm, model);
+      res.json({ id: doc.id, ...result });
+    } catch (e) {
+      console.error(e);
+      res.status(502).json({ error: "extraction_failed", id: doc.id });
+    }
+  });
+
   return router;
 }

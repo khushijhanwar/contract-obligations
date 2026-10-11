@@ -92,6 +92,20 @@ export default function App() {
     }
   }
 
+  async function retry() {
+    if (!doc) return;
+    setError("");
+    setUploading(true);
+    try {
+      await api("/documents/" + doc.id + "/retry", { method: "POST" });
+      setDoc(await api<DocDetail>("/documents/" + doc.id));
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setUploading(false);
+    }
+  }
+
   const text = doc?.rawText ?? "";
   const before = current ? text.slice(0, current.startOffset) : text;
   const clause = current ? text.slice(current.startOffset, current.endOffset) : "";
@@ -132,6 +146,14 @@ export default function App() {
         )}
       </header>
       {error && <div className="error">{error}</div>}
+      {doc?.status === "failed" && (
+        <div className="error">
+          Extraction failed for this contract.{" "}
+          <button onClick={retry} disabled={uploading}>
+            {uploading ? "Retrying…" : "Retry"}
+          </button>
+        </div>
+      )}
       <main>
         <section className="contract">
           {doc ? (
