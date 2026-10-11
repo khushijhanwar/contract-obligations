@@ -14,7 +14,13 @@ type DocDetail = Doc & { rawText: string; extractions: Extraction[] };
 
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`/api${path}`, init);
-  if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
+  if (!res.ok) {
+    const body = await res.text();
+    if (res.status === 403 && body.includes("disabled_in_demo")) {
+      throw new Error("Uploads and retries are turned off on this public demo, because they send text to a free-tier AI service. They work when you run the app locally.");
+    }
+    throw new Error(`${res.status} ${body}`);
+  }
   return res.json();
 }
 
