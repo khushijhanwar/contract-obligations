@@ -14,6 +14,12 @@ Free hosting: the first load after idle can take about a minute. Uploads are tur
 3. Approve it or correct it. Who did it and when is saved, with the old and new value.
 4. Look up reviewed fields across contracts, for example `GET /api/obligations?field=Governing%20Law&q=delaware`. Only approved or corrected fields are returned.
 
+## Upload (runs locally)
+
+Click **Upload .txt**, pick a plain-text contract, and the app extracts the fields and opens it for review. Uploading the same text again opens the existing contract and makes no new model call. Uploads are turned off on the public demo, so this screenshot is from a local run (a made-up two-sentence contract):
+
+![Upload, local run](docs/upload-local.png)
+
 ## Results
 
 Data: [CUAD](https://github.com/TheAtticusProject/cuad) (510 commercial contracts with expert labels, CC BY 4.0), 8 fields. I used 50 contracts to develop the prompt and 50 different contracts as a held-out test, both chosen by a hash of the contract title. The held-out set was run once with the final prompt, plus once with the first prompt for comparison. Nothing was changed after seeing those numbers. Model: `gemini-3.5-flash-lite`.
