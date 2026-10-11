@@ -1,7 +1,9 @@
 import type { PrismaClient } from "../generated/prisma/client.js";
-import { extractFields, type LlmClient } from "./extract.js";
+import { extractFields, type LlmClient, type ExtractedField } from "./extract.js";
 import { PROMPT_VERSION } from "./prompt.js";
 import { costUsd } from "./pricing.js";
+
+export const FALLBACK_MODEL = "regex-fallback";
 
 export async function processDocument(
   prisma: PrismaClient,
@@ -9,7 +11,7 @@ export async function processDocument(
   llm: LlmClient,
   model: string,
   version: string = PROMPT_VERSION,
-): Promise<{ skipped: boolean; status?: string; saved?: number; unverified?: number }> {
+): Promise<{ skipped: boolean; status?: string; saved?: number; fallback?: number; unverified?: number }> {
   const doc = await prisma.document.findUniqueOrThrow({ where: { id: documentId } });
 
   // Idempotency: a successful run for this document, model and prompt means no new LLM call.
@@ -40,6 +42,17 @@ export async function processDocument(
   }
 
   const ok = outcome.status === "ok";
+  const row = (f: ExtractedField, m: string) => ({
+    documentId,
+    fieldName: f.fieldName,
+    value: f.value,
+    sourceClause: f.clause,
+    startOffset: f.startOffset,
+    endOffset: f.endOffset,
+    model: m,
+    promptVersion: version,
+  });
+
   await prisma.$transaction([
     prisma.llmRun.create({
       data: {
@@ -54,17 +67,15 @@ export async function processDocument(
         error: ok ? null : outcome.status,
       },
     }),
+    // Drop rule-based rows nobody has reviewed, so a later model run can replace them.
+    prisma.extraction.deleteMany({
+      where: { documentId, promptVersion: version, model: FALLBACK_MODEL, status: "pending" },
+    }),
     prisma.extraction.createMany({
-      data: outcome.fields.map((f) => ({
-        documentId,
-        fieldName: f.fieldName,
-        value: f.value,
-        sourceClause: f.clause,
-        startOffset: f.startOffset,
-        endOffset: f.endOffset,
-        model,
-        promptVersion: version,
-      })),
+      data: [
+        ...outcome.fields.map((f) => row(f, model)),
+        ...outcome.fallback.map((f) => row(f, FALLBACK_MODEL)),
+      ],
       skipDuplicates: true,
     }),
     prisma.document.update({
@@ -73,5 +84,11 @@ export async function processDocument(
     }),
   ]);
 
-  return { skipped: false, status: outcome.status, saved: outcome.fields.length, unverified: outcome.unverified.length };
+  return {
+    skipped: false,
+    status: outcome.status,
+    saved: outcome.fields.length,
+    fallback: outcome.fallback.length,
+    unverified: outcome.unverified.length,
+  };
 }

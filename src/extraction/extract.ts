@@ -1,6 +1,7 @@
 import { FIELDS, ModelOutput, modelJsonSchema } from "./fields.js";
 import { buildPrompt, PROMPT_VERSION } from "./prompt.js";
 import { locateClause } from "./locate.js";
+import { ruleBasedFields } from "./fallback.js";
 
 export type LlmResult = { text: string; inputTokens: number; outputTokens: number };
 export interface LlmClient {
@@ -20,27 +21,37 @@ export type ExtractionOutcome = {
   status: "ok" | "invalid_output";
   promptVersion: string;
   fields: ExtractedField[];
+  fallback: ExtractedField[];
   unverified: UnverifiedField[];
   inputTokens: number;
   outputTokens: number;
 };
 
-export async function extractFields(contract: string, llm: LlmClient, version: string = PROMPT_VERSION): Promise<ExtractionOutcome> {
+export async function extractFields(
+  contract: string,
+  llm: LlmClient,
+  version: string = PROMPT_VERSION,
+): Promise<ExtractionOutcome> {
   const res = await llm.generate(buildPrompt(contract, version), modelJsonSchema);
   const base = {
     promptVersion: version,
     inputTokens: res.inputTokens,
     outputTokens: res.outputTokens,
   };
+  // Rule-based results, only for fields the model did not give us.
+  const fillIn = (have: ExtractedField[]) => {
+    const names = new Set(have.map((f) => f.fieldName));
+    return ruleBasedFields(contract).filter((f) => !names.has(f.fieldName));
+  };
 
   let parsed;
   try {
     parsed = ModelOutput.safeParse(JSON.parse(res.text));
   } catch {
-    return { ...base, status: "invalid_output", fields: [], unverified: [] };
+    return { ...base, status: "invalid_output", fields: [], fallback: fillIn([]), unverified: [] };
   }
   if (!parsed.success) {
-    return { ...base, status: "invalid_output", fields: [], unverified: [] };
+    return { ...base, status: "invalid_output", fields: [], fallback: fillIn([]), unverified: [] };
   }
 
   const fields: ExtractedField[] = [];
@@ -61,5 +72,5 @@ export async function extractFields(contract: string, llm: LlmClient, version: s
       endOffset: loc.end,
     });
   }
-  return { ...base, status: "ok", fields, unverified };
+  return { ...base, status: "ok", fields, fallback: fillIn(fields), unverified };
 }
