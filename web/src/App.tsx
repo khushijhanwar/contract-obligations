@@ -28,6 +28,26 @@ export default function App() {
   const [draft, setDraft] = useState("");
   const [error, setError] = useState("");
   const markRef = useRef<HTMLElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  async function upload(file: File) {
+    setError("");
+    setUploading(true);
+    try {
+      const text = await file.text();
+      const out = await api<{ id: string }>("/documents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name, text }),
+      });
+      setDocs(await api<Doc[]>("/documents"));
+      setDocId(out.id);
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setUploading(false);
+    }
+  }
 
   useEffect(() => {
     api<Doc[]>("/documents").then(setDocs).catch((e) => setError(String(e)));
@@ -90,6 +110,20 @@ export default function App() {
             </option>
           ))}
         </select>
+        <label className="upload">
+          {uploading ? "Processing…" : "Upload .txt"}
+          <input
+            type="file"
+            accept=".txt,text/plain"
+            hidden
+            disabled={uploading}
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) upload(f);
+              e.target.value = "";
+            }}
+          />
+        </label>
         <input placeholder="Your name" value={reviewer} onChange={(e) => setReviewer(e.target.value)} />
         {doc && (
           <span className="progress">
