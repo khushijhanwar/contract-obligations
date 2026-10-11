@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { PROMPT_VERSION } from "../src/extraction/prompt.js";
 import { prisma } from "../src/db.js";
 import { createGeminiClient } from "../src/extraction/gemini.js";
 import { processDocument } from "../src/extraction/service.js";
@@ -9,13 +10,16 @@ if (!model) throw new Error("GEMINI_MODEL is not set");
 const limitArg = process.argv.find((a) => a.startsWith("--limit="));
 const limit = limitArg ? Number(limitArg.split("=")[1]) : undefined;
 const promptArg = process.argv.find((a) => a.startsWith("--prompt="));
-const version = promptArg ? promptArg.split("=")[1] : "v1";
+const version = promptArg ? promptArg.split("=")[1] : PROMPT_VERSION;
+const splitArg = process.argv.find((a) => a.startsWith("--split="));
+const split = (splitArg ? splitArg.split("=")[1] : "dev") as "dev" | "heldout";
+if (split === "heldout" && !process.argv.includes("--final")) throw new Error("Held-out is for the final test only. Add --final.");
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const llm = createGeminiClient(model);
 // Only the dev split. The held-out set is for the final test.
 const docs = await prisma.document.findMany({
-  where: { split: "dev" },
+  where: { split },
   orderBy: { filename: "asc" },
   take: limit,
 });

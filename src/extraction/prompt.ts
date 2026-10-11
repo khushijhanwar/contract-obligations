@@ -1,6 +1,6 @@
 import { FIELDS } from "./fields.js";
 
-export const PROMPT_VERSION = "v1";
+export const PROMPT_VERSION = "v3";
 
 // Per-version field descriptions. A field not listed uses its text from fields.ts.
 const OVERRIDES: Record<string, Record<string, string>> = {
