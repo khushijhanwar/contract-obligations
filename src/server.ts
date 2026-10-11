@@ -1,8 +1,10 @@
 import { app } from "./app.js";
 import { prisma } from "./db.js";
 import { createRouter } from "./routes.js";
+import { createObligationsRouter } from "./obligations.js";
 
 app.use("/api", createRouter(prisma));
+app.use("/api", createObligationsRouter(prisma));
 
 const port = Number(process.env.PORT) || 3000;
 
