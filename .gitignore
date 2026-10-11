@@ -7,3 +7,5 @@ coverage/
 src/generated/
 data/
 reports/
+.env.*
+!.env.example
